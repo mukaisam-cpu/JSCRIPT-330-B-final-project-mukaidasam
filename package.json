@@ -22,8 +22,11 @@
   },
   "homepage": "https://github.com/mukaisam-cpu/JSCRIPT-330-B-final-project-mukaidasam#readme",
   "dependencies": {
+    "bcrypt": "^6.0.0",
     "express": "^5.1.0",
-    "mongoose": "^8.13.0"
+    "jsonwebtoken": "^9.0.3",
+    "mongoose": "^8.13.0",
+    "uuid": "^14.0.0"
   },
   "devDependencies": {
     "@babel/core": "^7.29.0",
