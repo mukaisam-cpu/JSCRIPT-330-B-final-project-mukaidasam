@@ -1,0 +1,43 @@
+{
+  "name": "jscript-330-b-final-project-mukaidasam",
+  "version": "1.0.0",
+  "description": "For the 310 and 320 classes, my final project was based around a web-based frontend for the RetroAcheivements API, which would allow users to view retro games and achievements created by the RA community. The original version created for 310 involved a save system that allowed users to bookmark and save favorite games to their browser cache. The upgraded version created for 320 was focused around the React frontend, and as such a save system could not be completed for the project. For this project, I intend to complete the missing feature and allow users to create an account and save favorite games, as well as adding some new functionality. This project's MVP will involve a simple backend to send requests to- time permitting, I would like to implement this into my 320 final project frontend.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js",
+    "dev": "nodemon -r @babel/register index.js"
+  },
+  "engines": {
+    "node": ">=20.0.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mukaisam-cpu/JSCRIPT-330-B-final-project-mukaidasam.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/mukaisam-cpu/JSCRIPT-330-B-final-project-mukaidasam/issues"
+  },
+  "homepage": "https://github.com/mukaisam-cpu/JSCRIPT-330-B-final-project-mukaidasam#readme",
+  "dependencies": {
+    "express": "^5.1.0",
+    "mongoose": "^8.13.0"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.29.0",
+    "@babel/preset-env": "^7.29.0",
+    "@babel/register": "^7.28.6",
+    "@shelf/jest-mongodb": "^4.3.2",
+    "eslint": "^8.57.1",
+    "eslint-config-airbnb-base": "^15.0.0",
+    "eslint-config-prettier": "^10.1.8",
+    "eslint-plugin-import": "^2.32.0",
+    "eslint-plugin-jest": "^29.15.0",
+    "jest": "^29.7.0",
+    "nodemon": "^3.1.11",
+    "prettier": "^3.8.1",
+    "supertest": "^7.2.2"
+  }
+}
