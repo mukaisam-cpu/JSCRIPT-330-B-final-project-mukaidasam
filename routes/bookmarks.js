@@ -3,7 +3,15 @@ import { Router } from 'express';
 const router = Router();
 
 router.get('/', async (req, res) => {
-    return res.status(200).send("Bookmarks get");
+    return res.status(503).send("Get bookmarks for user");
+})
+
+router.put('/:gameid/add', async (req, res) => {
+    return res.status(503).send("Add bookmark");
+})
+
+router.put('/:gameid/remove', async (req, res) => {
+    return res.status(503).send("Remove bookmark");
 })
 
 export default router;
