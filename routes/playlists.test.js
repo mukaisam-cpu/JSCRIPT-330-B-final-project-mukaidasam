@@ -1,3 +1,8 @@
+import request from 'supertest';
+
+import server from '../server';
+import * as testUtils from '../testUtils';
+
 describe('/playlists', () => {
     beforeAll(testUtils.connectDB);
     afterAll(testUtils.stopDB);
