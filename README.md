@@ -1,5 +1,8 @@
 # JSCRIPT-330-B-final-project-mukaidasam
 
+## Proof-of-concept update:
+Project framework is mostly set up. Routes and models have been created, server starts and updates the Mongo database accordingly. Next step is getting tests set up- currently the very framework doesn't seem to be functioning properly and I might need to ask for assistance on that when I return.
+
 ## Project Proposal: Game and playlist save backend for RetroAcheviements API access tool
 
 For the 310 and 320 classes, my final project was based around a web-based frontend for the RetroAcheivements API, which would allow users to view retro games and achievements created by the RA community. The original version created for 310 involved a save system that allowed users to bookmark and save favorite games to their browser cache. The upgraded version created for 320 was focused around the React frontend, and as such a save system could not be completed for the project. For this project, I intend to complete the missing feature and allow users to create an account and save favorite games, as well as adding some new functionality. This project's MVP will involve a simple backend to send requests to- time permitting, I would like to implement this into my 320 final project frontend.
