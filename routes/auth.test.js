@@ -12,21 +12,21 @@ describe('/auth', () => {
     describe('before signup', () => {
         describe('POST /', () => {
             it('should return 401 without token', () => {
-                const res = await request(server).get('/auth/');
+                const res = await request(server).get('/auth');
                 expect(res.statusCode).toEqual(401);
             })
         });
 
         describe('PUT /password', () => {
             it('should return 401 without token', () => {
-                const res = await request(server).get('/auth/');
+                const res = await request(server).get('/auth');
                 expect(res.statusCode).toEqual(401);
             })
         });
 
         describe('POST /logout', () => {
             it('should return 401 without token', () => {
-                const res = await request(server).get('/auth/');
+                const res = await request(server).get('/auth');
                 expect(res.statusCode).toEqual(401);
             })
         })
