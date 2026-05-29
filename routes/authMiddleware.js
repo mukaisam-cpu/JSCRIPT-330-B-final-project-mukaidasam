@@ -60,10 +60,11 @@ export const authorizeRA = async (req, res, next) => {
   // and key here
   const username = process.env.RA_USERNAME;
   const apiKey = process.env.RA_API_KEY;
-  console.log(username, apiKey);
   const auth = buildAuthorization({username:username, webApiKey:apiKey});
+  // This only builds an object containing the username and api key
+  // This does NOT actually validate any of the data, that's handled in the API calls
+  // Maybe I could do a simple call to validate, but I'd rather not add extra API bandwidth
   req.raAuth = auth;
-  console.log(auth);
   
   return next();
 }
