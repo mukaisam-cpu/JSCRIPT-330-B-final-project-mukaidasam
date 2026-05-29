@@ -1,6 +1,7 @@
 import jwt from 'jsonwebtoken';
 import * as Token from '../daos/token';
 import { getUserById } from '../daos/user';
+import { buildAuthorization } from '@retroachievements/api';
 
 const secret = 'notsosecret';
 
@@ -51,3 +52,14 @@ export const adminPrivalages = async (req, res, next) => {
   }
   return next();
 };
+
+/** Get the user's RetroAchievements web API key to authorize the RetroAchievements API */
+export const authorizeRA = async (req, res, next) => {
+  // On a time crunch here- For testing purposes, I'm just gonna toss my own username and
+  // and key here
+  const username = process.env.RA_USERNAME;
+  const apiKey = process.env.RA_PASSWORD;
+  const auth = buildAuthorization({username, apiKey});
+  req.raAuth = auth;
+  console.log(auth);
+}
