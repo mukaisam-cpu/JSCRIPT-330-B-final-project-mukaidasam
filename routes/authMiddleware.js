@@ -2,6 +2,7 @@ import jwt from 'jsonwebtoken';
 import * as Token from '../daos/token';
 import { getUserById } from '../daos/user';
 import { buildAuthorization } from '@retroachievements/api';
+require('dotenv').config();
 
 const secret = 'notsosecret';
 
@@ -58,8 +59,11 @@ export const authorizeRA = async (req, res, next) => {
   // On a time crunch here- For testing purposes, I'm just gonna toss my own username and
   // and key here
   const username = process.env.RA_USERNAME;
-  const apiKey = process.env.RA_PASSWORD;
-  const auth = buildAuthorization({username, apiKey});
+  const apiKey = process.env.RA_API_KEY;
+  console.log(username, apiKey);
+  const auth = buildAuthorization({username:username, webApiKey:apiKey});
   req.raAuth = auth;
   console.log(auth);
+  
+  return next();
 }
