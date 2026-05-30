@@ -15,8 +15,10 @@ router.put('/:gameid/add', [isAuthorized], async (req, res) => {
     return res.sendStatus(200);
 })
 
-router.put('/:gameid/remove', async (req, res) => {
-    return res.status(503).send("Remove bookmark");
+router.put('/:gameid/remove', [isAuthorized], async (req, res) => {
+    const gameId = req.params.gameid;
+    await User.removeBookmarkForUser(req.userId, gameId);
+    return res.sendStatus(200);
 })
 
 export default router;

@@ -51,5 +51,20 @@ export const addBookmarkForUser = async (userId, gameId) => {
   return models.User.updateOne({ _id: userId }, newData);
 }
 
+export const removeBookmarkForUser = async (userId, gameId) => {
+  const oldData = await getUserById(userId);
+  let bookmarks = oldData.bookmarks; 
+  const deleteThisIndex = bookmarks.indexOf(gameId);
+  if(deleteThisIndex > -1){
+    bookmarks.splice(deleteThisIndex, 1)
+  }
+  const newData = {
+    password: oldData.password,
+    email: oldData.email,
+    bookmarks: bookmarks
+  };
+  return models.User.updateOne({ _id: userId }, newData);
+}
+
 // Debug
 export const getAllUsers = () => models.User.find();
