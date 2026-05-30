@@ -1,8 +1,8 @@
 import { Router } from 'express';
 import { authorizeRA, isAuthorized } from './authMiddleware';
-
 import * as User from '../daos/user'
 import { getGame } from '@retroachievements/api';
+import { setTimeout } from "timers/promises";
 
 const router = Router();
 
@@ -13,6 +13,7 @@ router.get('/', [isAuthorized, authorizeRA], async (req, res) => {
     let games = []
     for (let i = 0; i < bookmarkIds.length; i++) {
         const gameData = await getGame(req.raAuth, { gameId: bookmarkIds[i]});
+        await setTimeout(500);
         games.push(gameData);
     }
     return res.status(200).send(games);
