@@ -13,6 +13,7 @@ router.get('/', [isAuthorized, authorizeRA], async (req, res) => {
     let games = []
     for (let i = 0; i < bookmarkIds.length; i++) {
         const gameData = await getGame(req.raAuth, { gameId: bookmarkIds[i]});
+        // Rate limiting
         await setTimeout(500);
         games.push(gameData);
     }
