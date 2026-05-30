@@ -2,11 +2,20 @@ import { Router } from 'express';
 import { authorizeRA, isAuthorized } from './authMiddleware';
 
 import * as User from '../daos/user'
+import { getGame } from '@retroachievements/api';
 
 const router = Router();
 
-router.get('/', [isAuthorized], async (req, res) => {
-    return res.status(503).send("Get bookmarks for user");
+router.get('/', [isAuthorized, authorizeRA], async (req, res) => {
+    const user = await User.getUserById(req.userId);
+    const bookmarkIds = user.bookmarks;
+
+    let games = []
+    for (let i = 0; i < bookmarkIds.length; i++) {
+        const gameData = await getGame(req.raAuth, { gameId: bookmarkIds[i]});
+        games.push(gameData);
+    }
+    return res.status(200).send(games);
 })
 
 router.put('/:gameid/add', [isAuthorized], async (req, res) => {
