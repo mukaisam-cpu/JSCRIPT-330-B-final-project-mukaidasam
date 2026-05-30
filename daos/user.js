@@ -34,10 +34,22 @@ export const changeUserPassword = async (userId, hash) => {
   const newData = {
     password: hash,
     email: oldData.email,
-    roles: oldData.roles,
+    bookmarks: oldData.bookmarks
   };
   return models.User.updateOne({ _id: userId }, newData);
 };
+
+export const addBookmarkForUser = async (userId, gameId) => {
+  const oldData = await getUserById(userId);
+  let bookmarks = oldData.bookmarks;
+  bookmarks.push(gameId);
+  const newData = {
+    password: oldData.password,
+    email: oldData.email,
+    bookmarks: bookmarks
+  };
+  return models.User.updateOne({ _id: userId }, newData);
+}
 
 // Debug
 export const getAllUsers = () => models.User.find();

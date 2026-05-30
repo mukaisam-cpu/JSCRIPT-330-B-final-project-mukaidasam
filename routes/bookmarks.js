@@ -3,7 +3,7 @@ import { authorizeRA } from './authMiddleware';
 
 const router = Router();
 
-router.get('/', [authorizeRA], async (req, res) => {
+router.get('/', async (req, res) => {
     return res.status(503).send("Get bookmarks for user");
 })
 

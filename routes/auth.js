@@ -25,7 +25,7 @@ router.post('/signup', async (req, res) => {
 
   if (user.password) {
     const hash = await bcrypt.hash(user.password, saltRounds);
-    await User.createUser({ password: hash, email: user.email, roles: 'user' });
+    await User.createUser({ password: hash, email: user.email, bookmarks: [] });
     return res.sendStatus(200);
   }
 
