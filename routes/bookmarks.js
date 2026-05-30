@@ -1,14 +1,18 @@
 import { Router } from 'express';
-import { authorizeRA } from './authMiddleware';
+import { authorizeRA, isAuthorized } from './authMiddleware';
+
+import * as User from '../daos/user'
 
 const router = Router();
 
-router.get('/', async (req, res) => {
+router.get('/', [isAuthorized], async (req, res) => {
     return res.status(503).send("Get bookmarks for user");
 })
 
-router.put('/:gameid/add', async (req, res) => {
-    return res.status(503).send("Add bookmark");
+router.put('/:gameid/add', [isAuthorized], async (req, res) => {
+    const gameId = req.params.gameid;
+    await User.addBookmarkForUser(req.userId, gameId);
+    return res.sendStatus(200);
 })
 
 router.put('/:gameid/remove', async (req, res) => {

@@ -9,6 +9,7 @@ const secret = 'notsosecret';
 /** Authorize user */
 export const isAuthorized = async (req, res, next) => {
   let token = req.headers.authorization;
+  console.log(token);
   if (token) {
     token = token.replace('Bearer ', '');
   }
@@ -16,6 +17,7 @@ export const isAuthorized = async (req, res, next) => {
   let matchingToken = null;
   try {
     const decoded = jwt.verify(token, secret);
+    console.log(decoded);
     matchingToken = await Token.getToken(decoded.uuid);
     req.userId = matchingToken[0].userId;
     req.token = token;
