@@ -24,3 +24,5 @@ export const createPlaylist = async (playlistData) => {
         throw e;
     }
 }
+
+export const deletePlaylist = async (id) => models.Playlist.deleteOne({ _id: id })
