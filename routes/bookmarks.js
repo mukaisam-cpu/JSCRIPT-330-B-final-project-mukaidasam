@@ -17,7 +17,7 @@ router.get('/', [isAuthorized, authorizeRA], async (req, res) => {
         await setTimeout(500);
         games.push(gameData);
     }
-    return res.status(200).send(games);
+    return res.status(200).json(games);
 })
 
 router.put('/:gameid/add', [isAuthorized], async (req, res) => {

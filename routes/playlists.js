@@ -12,7 +12,7 @@ router.get('/:id', [isAuthorized, authorizeRA], async (req, res) => {
         if(String(req.userId) !== String(playlist.userId)) {
             return res.sendStatus(404);
         }
-        return res.status(200).send(playlist);
+        return res.status(200).json(playlist);
     } catch (e) {
         if (e instanceof CastError) {
             return res.sendStatus(404);
@@ -23,8 +23,10 @@ router.get('/:id', [isAuthorized, authorizeRA], async (req, res) => {
 })
 
 router.get('/', [isAuthorized, authorizeRA], async (req, res) => {
+    const queryPlaylistName = req.query.n
+
     const playlists = await Playlist.getPlaylistsForUser(req.userId);
-    return res.status(200).send(playlists);
+    return res.status(200).json(playlists);
 })
 
 router.post('/', [isAuthorized], async (req, res) => {
