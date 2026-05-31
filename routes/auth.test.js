@@ -10,22 +10,22 @@ describe('/auth', () => {
     afterEach(testUtils.clearDB);
 
     describe('before signup', () => {
-        describe('POST /', () => {
-            it('should return 401 without token', () => {
-                const res = await request(server).get('/auth');
+        describe('POST /login', () => {
+            it('should return 401 without token', async () => {
+                const res = await request(server).get('/auth/login');
                 expect(res.statusCode).toEqual(401);
             })
         });
 
         describe('PUT /password', () => {
-            it('should return 401 without token', () => {
+            it('should return 401 without token', async () => {
                 const res = await request(server).get('/auth');
                 expect(res.statusCode).toEqual(401);
             })
         });
 
         describe('POST /logout', () => {
-            it('should return 401 without token', () => {
+            it('should return 401 without token', async () => {
                 const res = await request(server).get('/auth');
                 expect(res.statusCode).toEqual(401);
             })
