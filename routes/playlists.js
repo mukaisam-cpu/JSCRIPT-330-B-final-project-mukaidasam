@@ -24,8 +24,13 @@ router.get('/:id', [isAuthorized, authorizeRA], async (req, res) => {
 
 router.get('/', [isAuthorized, authorizeRA], async (req, res) => {
     const queryPlaylistName = req.query.n
-
-    const playlists = await Playlist.getPlaylistsForUser(req.userId);
+    console.log(queryPlaylistName);
+    let playlists = [];
+    if(queryPlaylistName){
+        playlists = await Playlist.seachUsersPlaylistsByName(req.userId, queryPlaylistName);
+    } else {
+        playlists = await Playlist.getPlaylistsForUser(req.userId);
+    }
     return res.status(200).json(playlists);
 })
 
