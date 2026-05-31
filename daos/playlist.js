@@ -2,8 +2,10 @@ import models from '../models';
 
 export class BadDataError extends Error { }
 
-export const getPlaylistsForUser = async (userId) => 
-    models.Playlist.find({ userId }).select({ _id: 0, __v: 0, userId: 0});
+export const getPlaylistById = async (id) => models.Playlist.findOne({ _id: id })
+
+export const getPlaylistsForUser = async (userId) =>
+    models.Playlist.find({ userId }).select({ _id: 0, __v: 0, userId: 0 });
 
 export const createPlaylist = async (playlistData) => {
     try {
