@@ -10,6 +10,7 @@ const router = Router();
 const bcrypt = require('bcrypt');
 
 const saltRounds = 10;
+// This is not secure
 const secret = 'notsosecret';
 
 router.post('/', async (req, res) => res.sendStatus(401));
@@ -66,7 +67,7 @@ router.post('/login', async (req, res) => {
   }
 });
 
-router.post('/logout', async (req, res) => res.sendStatus(404));
+router.post('/logout', isAuthorized, async (req, res) => res.sendStatus(404));
 
 router.put('/password', isAuthorized, async (req, res) => {
   try {
