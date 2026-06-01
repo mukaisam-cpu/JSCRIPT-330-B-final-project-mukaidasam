@@ -69,22 +69,4 @@ router.post('/login', async (req, res) => {
 
 router.post('/logout', isAuthorized, async (req, res) => res.sendStatus(404));
 
-router.put('/password', isAuthorized, async (req, res) => {
-  try {
-    const { userId } = req;
-    const { password } = req.body;
-    if (!password || password === '') {
-      return res.sendStatus(400);
-    }
-    const hash = await bcrypt.hash(password, saltRounds);
-
-    await User.changeUserPassword(userId, hash);
-
-    // const put_response = User.changeUserPassword(req.body)
-    return res.sendStatus(200);
-  } catch (e) {
-    return res.sendStatus(500);
-  }
-});
-
 export default router;
