@@ -76,8 +76,7 @@ describe('/auth', () => {
 
     describe('after signup', () => {
         beforeEach(async () => {
-            await request(server).post('/auth/signup').send(user0);
-            await request(server).post('/auth/signup').send(user1);
+            const signup = await request(server).post('/auth/signup').send(user0);
         });
 
         describe('POST /login', () => {
@@ -112,6 +111,32 @@ describe('/auth', () => {
                 ); // mongo _id regex
                 expect(decodedToken.password).toBeUndefined();
             });
-        })
+        });
+
+        describe('POST /logout', () => {
+            let token;
+            beforeEach(async () => {
+                const login = await request(server).post('/auth/login').send(user0);
+                token = login.body.token;
+                console.log(token);
+            })
+            it('should reject bogus token', async () => {
+                const res = await request(server)
+                    .post('/auth/logout')
+                    .set('Authorization', 'Bearer BAD')
+                    .send();
+
+                expect(res.statusCode).toEqual(401);
+            });
+
+            it("should delete the user's token", async () => {
+                const res = await request(server)
+                    .post('/auth/logout')
+                    .set('Authorization', `Bearer ${token}`)
+                    .send();
+                const matchingToken = await models.Token.findOne({uuid: token});
+                expect(matchingToken).toEqual(null);
+            })
+        });
     });
 });

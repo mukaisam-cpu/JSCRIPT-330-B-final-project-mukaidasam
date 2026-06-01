@@ -67,6 +67,15 @@ router.post('/login', async (req, res) => {
   }
 });
 
-router.post('/logout', isAuthorized, async (req, res) => res.sendStatus(404));
+router.post('/logout', isAuthorized, async (req, res) => {
+  const { userId } = req;
+  if (!userId) {
+    return res.sendStatus(401);
+  }
+  // Just passing in the uuid through the request body seems like bad practice...
+  const decoded = jwt.verify(req.token, secret);
+  await Token.deleteToken(decoded.uuid);
+  return res.sendStatus(200);
+});
 
 export default router;
