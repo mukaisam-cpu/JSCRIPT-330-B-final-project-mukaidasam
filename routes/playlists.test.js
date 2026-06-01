@@ -125,6 +125,23 @@ describe('/playlists', () => {
                     .set('Authorization', `Bearer ${token0}`);
                 expect(getRes._body.length).toEqual(1);
             })
+
+            it('should filter the result if a search query is provided', async () => {
+                const playlist1 = { name: "first", games: [1, 2, 3] };
+                const playlist2 = { name: "second", games: [1, 2, 3] }
+                const postRes1 = await request(server).post(`/playlists`)
+                    .set('Authorization', `Bearer ${token0}`)
+                    .send(playlist1);
+                const postRes2 = await request(server).post(`/playlists`)
+                    .set('Authorization', `Bearer ${token0}`)
+                    .send(playlist2);
+
+                const getRes = await request(server).get(`/playlists/?n=second`)
+                    .set('Authorization', `Bearer ${token0}`);
+                expect(getRes.body.length).toEqual(1);
+                expect(getRes.body[0].name).toEqual(playlist2.name);
+                expect(getRes.body[0].games).toEqual(playlist2.games);
+            })
         });
 
         describe('GET /:id', () => {
@@ -135,11 +152,17 @@ describe('/playlists', () => {
 
                 const savedPlaylistId = postRes._body._id;
                 const getRes = await request(server).get(`/playlists/${savedPlaylistId}`)
-                    .set('Authorization', `Bearer ${token0}`)
+                    .set('Authorization', `Bearer ${token0}`);
 
                 expect(testPlaylists[0].name).toEqual(getRes._body.name);
                 expect(testPlaylists[0].games).toEqual(getRes._body.games);
             });
+
+            it('should return 404 if playlist id is invalid', async () => {
+                const getRes = await request(server).get(`/playlists/notanid`)
+                    .set('Authorization', `Bearer ${token0}`);
+                expect(getRes.status).toEqual(404);
+            })
 
             it('should return an error if the playlist does not belong to the user', async () => {
                 const postRes1 = await request(server).post(`/playlists`)
@@ -167,6 +190,12 @@ describe('/playlists', () => {
                 const playlistThatShouldNotExist = await models.Playlist.findById(postRes._body._id);
                 expect(playlistThatShouldNotExist).toEqual(null);
             });
+
+            it('should return 404 if playlist id is invalid', async () => {
+                const deleteRes = await request(server).delete(`/playlists/notanid`)
+                    .set('Authorization', `Bearer ${token0}`);
+                expect(deleteRes.status).toEqual(404);
+            })
 
             it('should not delete playlists for other users', async () => {
                 const postRes1 = await request(server).post(`/playlists`)
