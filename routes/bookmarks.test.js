@@ -61,29 +61,36 @@ describe('/bookmarks', () => {
             it('should save the selected game ID to the user\'s bookmarks', async () => {
                 const gameId = 100;
                 const res = await request(server).put(`/bookmarks/${gameId}/add`)
-                .set('Authorization', `Bearer ${token0}`);
+                    .set('Authorization', `Bearer ${token0}`);
 
-                const user = await models.User.findOne({email: user0.email});
+                const user = await models.User.findOne({ email: user0.email });
                 expect(user.bookmarks).toEqual(["100"]);
             });
 
             it('should not add a duplicate and return normally if the game is already added', async () => {
                 const gameId = 100;
                 const res1 = await request(server).put(`/bookmarks/${gameId}/add`)
-                .set('Authorization', `Bearer ${token0}`);
+                    .set('Authorization', `Bearer ${token0}`);
                 const res2 = await request(server).put(`/bookmarks/${gameId}/add`)
-                .set('Authorization', `Bearer ${token0}`);
-                const user = await models.User.findOne({email: user0.email});
+                    .set('Authorization', `Bearer ${token0}`);
+                const user = await models.User.findOne({ email: user0.email });
                 expect(user.bookmarks).toEqual(["100"]);
             })
         })
 
         describe('GET /', () => {
             // TODO: Better validation, might change data returns later
+            beforeEach(async () => {
+                for (let i = 0; i < user0.bookmarks.length; i++) {
+                    await request(server).put(`/bookmarks/${user0.bookmarks[i]}/add`)
+                        .set('Authorization', `Bearer ${token0}`);
+                }
+            })
+
             it('should return all bookmarked games for the current user', async () => {
                 const res = await request(server).get('/bookmarks')
-                .set('Authorization', `Bearer ${token0}`);
-                expect(res.body).toEqual(user0.bookmarks)
+                    .set('Authorization', `Bearer ${token0}`);
+                expect(res.body).toEqual(user0.bookmarks);
                 expect(res.statusCode).toEqual(200);
             });
         });
@@ -92,8 +99,8 @@ describe('/bookmarks', () => {
             it('should remove the selected game ID from the user\'s bookmarks', async () => {
                 const gameId = 100;
                 const res = await request(server).put(`/bookmarks/${gameId}/remove`)
-                .set('Authorization', `Bearer ${token0}`);
-                const user = await models.User.findOne({email: user0.email});
+                    .set('Authorization', `Bearer ${token0}`);
+                const user = await models.User.findOne({ email: user0.email });
             })
 
             it('should return normally if the game does not exist in the user\'s bookmarks', async () => {

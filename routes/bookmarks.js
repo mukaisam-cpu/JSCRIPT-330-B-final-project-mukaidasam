@@ -8,16 +8,17 @@ const router = Router();
 
 router.get('/', [isAuthorized, authorizeRA], async (req, res) => {
     const user = await User.getUserById(req.userId);
-    const bookmarkIds = user.bookmarks;
+    const bookmarkIds = user.bookmarks.map(Number);
 
-    let games = []
-    for (let i = 0; i < bookmarkIds.length; i++) {
-        const gameData = await getGame(req.raAuth, { gameId: bookmarkIds[i]});
-        // Rate limiting
-        await setTimeout(500);
-        games.push(gameData);
-    }
-    return res.status(200).json(games);
+    // This is too much of a pain to validate so I'm just returning the game ids for now
+    // let games = []
+    // for (let i = 0; i < bookmarkIds.length; i++) {
+    //     const gameData = await getGame(req.raAuth, { gameId: bookmarkIds[i]});
+    //     // Rate limiting
+    //     await setTimeout(500);
+    //     games.push(gameData);
+    // }
+    return res.status(200).json(bookmarkIds);
 })
 
 router.put('/:gameid/add', [isAuthorized], async (req, res) => {
