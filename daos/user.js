@@ -29,16 +29,6 @@ export const getUserByEmail = async (email) => {
   }
 };
 
-export const changeUserPassword = async (userId, hash) => {
-  const oldData = await getUserById(userId);
-  const newData = {
-    password: hash,
-    email: oldData.email,
-    bookmarks: oldData.bookmarks
-  };
-  return models.User.updateOne({ _id: userId }, newData);
-};
-
 export const addBookmarkForUser = async (userId, gameId) => {
   const oldData = await getUserById(userId);
   let bookmarks = oldData.bookmarks;
