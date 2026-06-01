@@ -23,6 +23,11 @@ router.get('/', [isAuthorized, authorizeRA], async (req, res) => {
 
 router.put('/:gameid/add', [isAuthorized], async (req, res) => {
     const gameId = req.params.gameid;
+    const user = await User.getUserById(req.userId);
+    if(user.bookmarks.includes(gameId)) {
+        // Should I return something else to indicate that a repeat bookmark was not added?
+        return res.status(200).send("Bookmark already added");
+    }
     await User.addBookmarkForUser(req.userId, gameId);
     return res.sendStatus(200);
 })
