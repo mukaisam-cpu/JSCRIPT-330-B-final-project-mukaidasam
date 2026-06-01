@@ -132,7 +132,7 @@ describe('/playlists', () => {
                 const postRes = await request(server).post(`/playlists`)
                     .set('Authorization', `Bearer ${token0}`)
                     .send({ ...testPlaylists[0] });
-                
+
                 const savedPlaylistId = postRes._body._id;
                 const getRes = await request(server).get(`/playlists/${savedPlaylistId}`)
                     .set('Authorization', `Bearer ${token0}`)
@@ -142,14 +142,45 @@ describe('/playlists', () => {
             });
 
             it('should return an error if the playlist does not belong to the user', async () => {
+                const postRes1 = await request(server).post(`/playlists`)
+                    .set('Authorization', `Bearer ${token0}`)
+                    .send({ ...testPlaylists[0] });
+                const postRes2 = await request(server).post(`/playlists`)
+                    .set('Authorization', `Bearer ${token1}`)
+                    .send({ ...testPlaylists[1] });
 
+                const savedPlaylistId = postRes2._body._id;
+                const getRes = await request(server).get(`/playlists/${savedPlaylistId}`)
+                    .set('Authorization', `Bearer ${token0}`)
+                expect(getRes.status).toEqual(404);
             });
         });
 
         describe('DELETE /:id', () => {
-            it('should delete the selected playlist', async () => {
+            it('should delete the selected playlist and return 200', async () => {
+                const postRes = await request(server).post(`/playlists`)
+                    .set('Authorization', `Bearer ${token0}`)
+                    .send({ ...testPlaylists[0] });
+                const deleteRes = await request(server).delete(`/playlists/${postRes._body._id}`)
+                    .set('Authorization', `Bearer ${token0}`);
 
+                const playlistThatShouldNotExist = await models.Playlist.findById(postRes._body._id);
+                expect(playlistThatShouldNotExist).toEqual(null);
             });
+
+            it('should not delete playlists for other users', async () => {
+                const postRes1 = await request(server).post(`/playlists`)
+                    .set('Authorization', `Bearer ${token0}`)
+                    .send({ ...testPlaylists[0] });
+                const postRes2 = await request(server).post(`/playlists`)
+                    .set('Authorization', `Bearer ${token1}`)
+                    .send({ ...testPlaylists[1] });
+
+                const savedPlaylistId = postRes2._body._id;
+                const deleteRes = await request(server).delete(`/playlists/${savedPlaylistId}`)
+                    .set('Authorization', `Bearer ${token0}`)
+                expect(deleteRes.status).toEqual(404);
+            })
         })
     })
 })
