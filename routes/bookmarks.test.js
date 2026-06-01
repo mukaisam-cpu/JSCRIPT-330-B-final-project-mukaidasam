@@ -105,7 +105,8 @@ describe('/bookmarks', () => {
 
             it('should return normally if the game does not exist in the user\'s bookmarks', async () => {
                 const gameId = 100;
-                const res = await request(server).put(`/bookmarks/remove/${gameId}`);
+                const res = await request(server).put(`/bookmarks/${gameId}/remove`)
+                    .set('Authorization', `Bearer ${token0}`);
                 expect(res.statusCode).toEqual(200);
             })
         });
