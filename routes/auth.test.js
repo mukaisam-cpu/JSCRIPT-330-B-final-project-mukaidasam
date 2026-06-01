@@ -80,36 +80,38 @@ describe('/auth', () => {
             await request(server).post('/auth/signup').send(user1);
         });
 
-        it("should return 400 when password isn't provided", async () => {
-            const res = await request(server).post('/auth/login').send({
-                email: user0.email,
+        describe('POST /login', () => {
+            it("should return 400 when password isn't provided", async () => {
+                const res = await request(server).post('/auth/login').send({
+                    email: user0.email,
+                });
+                expect(res.statusCode).toEqual(400);
             });
-            expect(res.statusCode).toEqual(400);
-        });
 
-        it("should return 401 when password doesn't match", async () => {
-            const res = await request(server).post('/auth/login').send({
-                email: user0.email,
-                password: 'wrong',
+            it("should return 401 when password doesn't match", async () => {
+                const res = await request(server).post('/auth/login').send({
+                    email: user0.email,
+                    password: 'wrong',
+                });
+                expect(res.statusCode).toEqual(401);
             });
-            expect(res.statusCode).toEqual(401);
-        });
 
-        it('should return 200 and a token when password matches', async () => {
-            const res = await request(server).post('/auth/login').send(user0);
-            expect(res.statusCode).toEqual(200);
-            expect(typeof res.body.token).toEqual('string');
-        });
+            it('should return 200 and a token when password matches', async () => {
+                const res = await request(server).post('/auth/login').send(user0);
+                expect(res.statusCode).toEqual(200);
+                expect(typeof res.body.token).toEqual('string');
+            });
 
-        it('should return a JWT with user email and id, but not password', async () => {
-            const res = await request(server).post('/auth/login').send(user0);
-            const { token } = res.body;
-            const decodedToken = jwt.decode(token);
-            expect(decodedToken.email).toEqual(user0.email);
-            expect(decodedToken._id).toMatch(
-                /^(?=[a-f\d]{24}$)(\d+[a-f]|[a-f]+\d)/i,
-            ); // mongo _id regex
-            expect(decodedToken.password).toBeUndefined();
-        });
+            it('should return a JWT with user email and id, but not password', async () => {
+                const res = await request(server).post('/auth/login').send(user0);
+                const { token } = res.body;
+                const decodedToken = jwt.decode(token);
+                expect(decodedToken.email).toEqual(user0.email);
+                expect(decodedToken._id).toMatch(
+                    /^(?=[a-f\d]{24}$)(\d+[a-f]|[a-f]+\d)/i,
+                ); // mongo _id regex
+                expect(decodedToken.password).toBeUndefined();
+            });
+        })
     });
 });
