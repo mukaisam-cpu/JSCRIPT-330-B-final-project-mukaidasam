@@ -1,4 +1,5 @@
 import request from 'supertest';
+import jwt from 'jsonwebtoken';
 
 import server from '../server';
 import * as testUtils from '../testUtils';
@@ -74,6 +75,11 @@ describe('/auth', () => {
     });
 
     describe('after signup', () => {
+        beforeEach(async () => {
+            await request(server).post('/auth/signup').send(user0);
+            await request(server).post('/auth/signup').send(user1);
+        });
+
         it("should return 400 when password isn't provided", async () => {
             const res = await request(server).post('/auth/login').send({
                 email: user0.email,
@@ -99,7 +105,7 @@ describe('/auth', () => {
             const res = await request(server).post('/auth/login').send(user0);
             const { token } = res.body;
             const decodedToken = jwt.decode(token);
-            expect(decodedToken.email).toEqual(user.email);
+            expect(decodedToken.email).toEqual(user0.email);
             expect(decodedToken._id).toMatch(
                 /^(?=[a-f\d]{24}$)(\d+[a-f]|[a-f]+\d)/i,
             ); // mongo _id regex
