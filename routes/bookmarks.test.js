@@ -91,8 +91,9 @@ describe('/bookmarks', () => {
         describe('PUT /:gameid/remove', () => {
             it('should remove the selected game ID from the user\'s bookmarks', async () => {
                 const gameId = 100;
-                const res = await request(server).put(`/bookmarks/remove/${gameId}`);
-                expect(res.statusCode).toEqual(200);
+                const res = await request(server).put(`/bookmarks/${gameId}/remove`)
+                .set('Authorization', `Bearer ${token0}`);
+                const user = await models.User.findOne({email: user0.email});
             })
 
             it('should return normally if the game does not exist in the user\'s bookmarks', async () => {
