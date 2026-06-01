@@ -120,6 +120,7 @@ describe('/auth', () => {
                 token = login.body.token;
                 console.log(token);
             })
+            
             it('should reject bogus token', async () => {
                 const res = await request(server)
                     .post('/auth/logout')
