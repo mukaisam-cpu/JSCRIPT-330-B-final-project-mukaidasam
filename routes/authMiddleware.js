@@ -26,34 +26,6 @@ export const isAuthorized = async (req, res, next) => {
   return next();
 };
 
-/** Check and authorize admin privalages */
-export const isAdmin = async (req, res, next) => {
-  // Anti-spoof protection, compare JWT role to database role
-  const user = await getUserById(req.userId);
-  if (
-    user.roles.sort().toString() === req.roles.sort().toString() &&
-    req.roles.includes('admin')
-  ) {
-    return next();
-  }
-  return res.sendStatus(403);
-};
-
-/** Same as the previous function, but return admin privalege level */
-export const adminPrivalages = async (req, res, next) => {
-  // Anti-spoof protection, compare JWT ro sle to database role
-  const user = await getUserById(req.userId);
-  // I don't know if this is secure
-  req.isAdmin = false;
-  if (
-    user.roles.sort().toString() === req.roles.sort().toString() &&
-    req.roles.includes('admin')
-  ) {
-    req.isAdmin = true;
-  }
-  return next();
-};
-
 /** Get the user's RetroAchievements web API key to authorize the RetroAchievements API */
 export const authorizeRA = async (req, res, next) => {
   // On a time crunch here- For testing purposes, I'm just gonna toss my own username and
