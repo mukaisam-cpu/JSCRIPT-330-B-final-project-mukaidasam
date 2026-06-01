@@ -22,9 +22,8 @@ router.get('/:id', [isAuthorized, authorizeRA], async (req, res) => {
 
 })
 
-router.get('/', [isAuthorized, authorizeRA], async (req, res) => {
+router.get('/', isAuthorized, authorizeRA, async (req, res) => {
     const queryPlaylistName = req.query.n
-    console.log(queryPlaylistName);
     let playlists = [];
     if (queryPlaylistName) {
         playlists = await Playlist.seachUsersPlaylistsByName(req.userId, queryPlaylistName);
@@ -34,13 +33,13 @@ router.get('/', [isAuthorized, authorizeRA], async (req, res) => {
     return res.status(200).json(playlists);
 })
 
-router.post('/', [isAuthorized], async (req, res) => {
+router.post('/', isAuthorized, async (req, res) => {
     const playlist = req.body;
-    await Playlist.createPlaylist({ userId: req.userId, ...playlist })
-    return res.status(200).send("Playlists post");
+    const created = await Playlist.createPlaylist({ userId: req.userId, ...playlist })
+    return res.status(200).send(created);
 })
 
-router.delete('/:id', [isAuthorized], async (req, res) => {
+router.delete('/:id', isAuthorized, async (req, res) => {
     const playlistId = req.params.id
 
     // Validation, don't let the user delete other users' data
