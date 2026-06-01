@@ -118,7 +118,6 @@ describe('/auth', () => {
             beforeEach(async () => {
                 const login = await request(server).post('/auth/login').send(user0);
                 token = login.body.token;
-                console.log(token);
             })
             
             it('should reject bogus token', async () => {
